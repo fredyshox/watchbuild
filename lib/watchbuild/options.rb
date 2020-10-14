@@ -39,7 +39,15 @@ module WatchBuild
         FastlaneCore::ConfigItem.new(key: :sample_only_once,
                                      description: 'Only check for the build once, instead of waiting for it to process',
                                      is_string: false,
-                                     default_value: false)
+                                     default_value: false),
+        FastlaneCore::ConfigItem.new(key: :app_version,
+                                     description: 'Build version to look for',
+                                     optional: true,
+                                     default_value: nil),
+        FastlaneCore::ConfigItem.new(key: :build_number,
+                                     description: 'Build number to look for',
+                                     optional: true,
+                                     default_value: nil)
       ]
     end
   end
