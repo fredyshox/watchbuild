@@ -30,8 +30,8 @@ module WatchBuild
       UI.user_error!("Could not find app with app identifier #{WatchBuild.config[:app_identifier]}") unless app
 
       loop do
-        app_version = WatchBuild.config(:app_version)
-        build_number = WatchBuild.config(:build_number)
+        app_version = WatchBuild.config[:app_version]
+        build_number = WatchBuild.config[:build_number]
         begin
           build = find_build(app_version, build_number)
           return build if build.processing == false
@@ -90,19 +90,14 @@ module WatchBuild
 
     def find_build(version, build_number)
       build = nil
-      build_list = []
-      if version == nil || build_number == nil
-        build_list = app.latest_version.candidate_builds
-      else
-        build_list = app.all_builds_for_train(version)
-      end
-      
+      build_list = app.latest_version.candidate_builds
+
       build_list.each do |b|
         if version == nil || build_number == nil
           # old filtering, without version/number specified
           build = b if !build || b.upload_date > build.upload_date
         else
-          build = b if (b.train_version == version && build_number && b.build_version == build_version)
+          build = b if (b.train_version == version && b.build_version == build_number)
         end
       end
 
